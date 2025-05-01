@@ -9,11 +9,11 @@ import argparse
 #### Calculate density. 
 # Follow Lipid14 paper for Hvap calc. 60ns sims, cur forst 10 ns, use last 50 ns for sampling
 # standard deviation using block ageraves, 5 equal blocks of 10 ns 
-molecules = ['pentane','hexane', 'heptane', 'octane', 'decane', 'pentadecane']
+molecules = [ 'pentadecane'] #, 'pentane','hexane', 'octane', 'decane','heptane', 'pentadecane']
 
 def calcDensity():  
     for mol in molecules:
-        command_liquid_Density = f"echo Density | gmx energy -f ./{mol}/npt2_{mol}_liquid_f.edr -o ./{mol}/Liquid_density.xvg -b 10000 -e 60000"
+        command_liquid_Density = f"echo Density | gmx energy -f ./{mol}/npt2_{mol}_liquid.edr -o ./{mol}/Liquid_density.xvg -b 10000 -e 60000"
         subprocess.run(command_liquid_Density, shell=True, check=True)
         P_liquid = np.loadtxt(f'./{mol}/Liquid_density.xvg', comments=['#','@'])
         

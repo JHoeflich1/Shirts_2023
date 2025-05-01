@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 import json
 import argparse 
 
-molecules = ['hexane', 'heptane', 'octane', 'decane', 'pentadecane']
+molecules = ['pentadecane'] #['hexane', 'heptane', 'octane', 'decane', 'pentadecane']
 
 def plotVolume():  
     for mol in molecules:
-        volume = f"echo Volume | gmx energy -f ./{mol}/npt_{mol}_liquid.edr -o ./{mol}/Liquid_volume.xvg -b 10000 -e 60000"
+        volume = f"echo Volume | gmx energy -f ./npt_{mol}_liquid.edr -o ./Liquid_volume.xvg -b 10000 -e 60000"
         subprocess.run(volume, shell=True, check=True)
-        V_liq = np.loadtxt(f'./{mol}/Liquid_volume.xvg', comments=['#','@'])
+        V_liq = np.loadtxt(f'./Liquid_volume.xvg', comments=['#','@'])
         
         #Plot to check 
         plt.plot(V_liq[:,0], V_liq[:,1])
@@ -24,9 +24,9 @@ def plotVolume():
 
 def plotDims():  
     for mol in molecules:
-        dims_run = f"echo 'Box-X\nBox-Y\nBox-Z' | gmx energy -f ./{mol}/npt_{mol}_liquid.edr -o ./{mol}/dims.xvg -b 10000 -e 60000"
+        dims_run = f"echo 'Box-X\nBox-Y\nBox-Z' | gmx energy -f ./npt_{mol}_liquid.edr -o ./dims.xvg -b 10000 -e 60000"
         subprocess.run(dims_run, shell=True, check=True)
-        dims = np.loadtxt(f'./{mol}/dims.xvg', comments=['#','@'])
+        dims = np.loadtxt(f'./dims.xvg', comments=['#','@'])
 
         plt.plot(dims[:,0], dims[:,1], label="X", alpha = 0.2)
         plt.plot(dims[:,0], dims[:,2], label="Y", alpha = 0.2)

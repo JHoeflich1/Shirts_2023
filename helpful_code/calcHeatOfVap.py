@@ -3,17 +3,17 @@ import numpy as np
 import json
 import argparse 
 
-molecules = ['pentane', 'hexane', 'heptane', 'octane', 'decane', 'pentadecane']
+molecules = ['pentadecane']#, 'pentane', 'hexane', 'heptane','octane', 'decane', 'pentadecane']
 
 def calcHvap():
     
     for mol in molecules:
         # Extract potential energy from GROMACS .edr files using gmx energy
-        command_gas_Pot = f"echo Potential | gmx energy -f ./Gas_sims/{mol}/nvt_{mol}_gas_f.edr -o ./Gas_sims/{mol}/Gas_Hvap_Pot.xvg -b 10000 -e 60000"
+        command_gas_Pot = f"echo Potential | gmx energy -f ./Gas_sims/{mol}/nvt_{mol}_gas.edr -o ./Gas_sims/{mol}/Gas_Hvap_Pot.xvg -b 10000 -e 60000"
         subprocess.run(command_gas_Pot, shell=True, check=True)
         P_gas = np.loadtxt(f'./Gas_sims/{mol}/Gas_Hvap_Pot.xvg', comments=['#','@'])
 
-        command_liquid_Pot = f"echo Potential | gmx energy -f ./Liquid_sims/{mol}/npt2_{mol}_liquid_f.edr -o ./Liquid_sims/{mol}/Liquid_Hvap_Pot.xvg -b 10000 -e 60000"
+        command_liquid_Pot = f"echo Potential | gmx energy -f ./Liquid_sims/{mol}/npt2_{mol}_liquid.edr -o ./Liquid_sims/{mol}/Liquid_Hvap_Pot.xvg -b 10000 -e 60000"
         subprocess.run(command_liquid_Pot, shell=True, check=True)
         P_liquid = np.loadtxt(f'./Liquid_sims/{mol}/Liquid_Hvap_Pot.xvg', comments=['#','@'])
 
